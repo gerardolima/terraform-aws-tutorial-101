@@ -4,7 +4,7 @@ Build, change, and destroy AWS infrastructure using Terraform. Step-by-step, com
 
 ## Install Terraform
 
-Using homwbrew
+Install using homebrew
 ```shell
 $ brew tap hashicorp/tap
 $ brew install hashicorp/tap/terraform
@@ -28,7 +28,23 @@ $ docker ps
 
 # release resources
 $ terraform destroy
-cd ..
+$ cd ..
 ```
 
+## Build Infrastructure
 
+Configure AWS cli
+```shell
+$ aws configure
+```
+
+Test on AWS
+```shell
+$ cd 02-learn-terraform-aws-instance
+$ terraform init
+$ terraform apply
+
+$ aws ec2 describe-instances --region us-west-2 | jq -c '.Reservations[].Instances[] | (.InstanceId, .State.Name)'
+
+$ terraform destroy
+```
