@@ -40,11 +40,22 @@ $ aws configure
 
 Test on AWS
 ```shell
-$ cd 02-learn-terraform-aws-instance
+$ cd 02-learn-terrzaform-aws-instance
+# see main.tf
+
+# initialize / validate
 $ terraform init
+$ terraform fmt
+$ terraform validate
+
+# create resources
 $ terraform apply
 
+# see results
+$ terraform show
+$ terraform state list
 $ aws ec2 describe-instances --region us-west-2 | jq -c '.Reservations[].Instances[] | (.InstanceId, .State.Name)'
 
+# release resources
 $ terraform destroy
 ```
