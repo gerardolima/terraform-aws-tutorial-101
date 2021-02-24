@@ -1,4 +1,4 @@
-# Get Started - AWS
+# Terraform + AWS Tutorial 101
 
 Build, change, and destroy AWS infrastructure using Terraform. Step-by-step, command-line tutorials will walk you through the Terraform basics for the first time. https://learn.hashicorp.com/collections/terraform/aws-get-started
 
@@ -13,49 +13,66 @@ $ terraform -install-autocomplete
 $ terraform -version
 ```
 
-Local test
-```shell
-$ cd 01-terraform-docker-demo
-# see main.tf
+## Local test
+The Terraform tutorial uses the Docker provider for assessing everything is
+ready on the local system. This approach also requires less configuration
+avoids the risk of creating infrastructure on the cloud, that, depending
+on the usage, might be charged.
 
-# create resources
+```shell
+$ cd 01-docker
+$ # see main.tf
+
+$ # create resources
 $ terraform init
 $ terraform apply
 
-# see results
+$ # see results
 $ curl localhost:8000
 $ docker ps
 
-# release resources
+$ # release resources
 $ terraform destroy
 $ cd ..
 ```
 
-## Build Infrastructure
+## AWS client tool (`aws`)
+In order to use AWS services without storing credentials inside the project,
+I opted to configure a profile on the AWS client tool.
 
-Configure AWS cli
+It was useful to set the environment variable `AWS_PROFILE` to this profile,
+because I could clearly see the current AWS context on my
+[prompt](https://starship.rs/) and I could ran the usual tools to assess the
+changes on AWS infrastructure. Other common tools (like
+[direnv](https://direnv.net/#/)) can be used to set its appropriate value,
+depending on the current directory.
+
 ```shell
-$ aws configure
+$ export AWS_PROFILE=MY_PROFILE
+$ aws configure --profile $AWS_PROFILE # set the credentials
+$ aws sts get-caller-identity          # check the current context
 ```
 
-Test on AWS
-```shell
-$ cd 02-learn-terrzaform-aws-instance
-# see main.tf
+## AWS EC2
 
-# initialize / validate
+```shell
+$ cd 02-aws-ec2
+$ # see providers.tf, provider-aws.tf and ec2.tf
+
+$ # initialize / validate
 $ terraform init
 $ terraform fmt
 $ terraform validate
 
-# create resources
+$ # create resources
 $ terraform apply
 
-# see results
+$ # see results
 $ terraform show
 $ terraform state list
-$ aws ec2 describe-instances --region us-west-2 | jq -c '.Reservations[].Instances[] | (.InstanceId, .State.Name)'
+$ aws ec2 describe-instances | jq -c '.Reservations[].Instances[] | (.State.Name + ":" + .InstanceType + ":" + .InstanceId)'
 
-# release resources
+$ # release resources
 $ terraform destroy
+$ cd ..
 ```
