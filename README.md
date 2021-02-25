@@ -76,3 +76,30 @@ $ # release resources
 $ terraform destroy
 $ cd ..
 ```
+
+## AWS Lambda
+
+```shell
+$ cd 03-aws-lambda
+$ # see providers.tf, provider-aws.tf and lambda.tf
+
+$ # zip the function payload (these names are bound on tf files)
+$ zip lambda_function_payload.zip index.js
+
+$ # initialize / validate
+$ terraform init
+$ terraform fmt
+$ terraform validate
+
+$ # create resources
+$ terraform apply
+
+$ # see results
+$ terraform show
+$ terraform state list
+$ aws ec2 describe-instances | jq -c '.Reservations[].Instances[] | (.State.Name + ":" + .InstanceType + ":" + .InstanceId)'
+
+$ # release resources
+$ terraform destroy
+$ cd ..
+```
