@@ -1,4 +1,8 @@
-// see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function
+/**
+  resources
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
+*/
 
 
 data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
@@ -14,6 +18,7 @@ data "aws_iam_policy_document" "AWSLambdaTrustPolicy" {
 
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
+  path               = "/service-role/"
   assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
 }
 
