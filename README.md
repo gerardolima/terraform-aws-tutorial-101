@@ -84,7 +84,7 @@ $ cd 03-aws-lambda
 $ # see providers.tf, provider-aws.tf and lambda.tf
 
 $ # zip the function payload (these names are bound on tf files)
-$ zip lambda_function_payload.zip index.js
+$ zip hello-lambda-js.zip index.js
 
 $ # initialize / validate
 $ terraform init

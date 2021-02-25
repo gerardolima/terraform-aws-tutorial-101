@@ -32,12 +32,12 @@ resource aws_iam_role "iam_for_lambda" {
 #   role       = aws_iam_role.iam_for_lambda.name
 # }
 
-resource aws_lambda_function "test_lambda" {
+resource aws_lambda_function "hello-lambda-js" {
   runtime          = "nodejs14.x"
-  function_name    = "lambda_function_name"
-  handler          = "index.handler"
-  filename         = "lambda_function_payload.zip"
-  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  function_name    = "hello-lambda-js"     # name shown on AWS
+  handler          = "index.handler"       # zip file MUST have a file named `index.js`; this file MUST export a function `handler`
+  filename         = "hello-lambda-js.zip" # keep this in synch with `source_code_hash`
+  source_code_hash = filebase64sha256("hello-lambda-js.zip")
 
   role = aws_iam_role.iam_for_lambda.arn
 
