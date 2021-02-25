@@ -1,4 +1,7 @@
-# declare all providers used
+/**
+  resources:
+  - https://registry.terraform.io/providers/hashicorp/aws/latest
+*/
 
 terraform {
   required_providers {
@@ -7,4 +10,9 @@ terraform {
       version = "~> 3.27"
     }
   }
+}
+
+provider aws {
+  profile = var.aws_profile
+  region  = var.aws_region
 }

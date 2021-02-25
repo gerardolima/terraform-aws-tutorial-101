@@ -5,7 +5,12 @@
 */
 
 variable aws_profile { # << $TF_VAR_aws_profile
-  description = "A previously configured profile on AWS cli tool"
+  description = "A previously configured profile on AWS cli tool."
+  type        = string
+}
+
+variable aws_region { # << $TF_VAR_aws_region
+  description = "The region where AWS operations will take place (eu-west-1, us-east-2, ...)."
   type        = string
 }
 
