@@ -57,7 +57,6 @@ $ aws sts get-caller-identity          # check the current context
 
 ```shell
 $ cd 02-aws-ec2
-$ # see providers.tf, provider-aws.tf and ec2.tf
 
 $ # initialize / validate
 $ terraform init
@@ -78,28 +77,35 @@ $ cd ..
 ```
 
 ## AWS Lambda
+The following commands create a disconnected Lambda function on AWS. Although
+it _can_ be tested it's only accessible by the AWS client tool or AWS console.
 
 ```shell
 $ cd 03-aws-lambda
-$ # see providers.tf, provider-aws.tf and lambda.tf
 
 $ # zip the function payload (these names are bound on tf files)
 $ zip hello-lambda-js.zip index.js
 
 $ # initialize / validate
-$ terraform init
-$ terraform fmt
-$ terraform validate
+$ terraform init; terraform fmt; terraform validate
 
 $ # create resources
 $ terraform apply
 
-$ # see results
-$ terraform show
-$ terraform state list
-$ aws ec2 describe-instances | jq -c '.Reservations[].Instances[] | (.State.Name + ":" + .InstanceType + ":" + .InstanceId)'
+$ # list all lambda functions
+$ aws lambda list-functions | jq -c '.Functions[].FunctionName'
+
+$ # invoke the function created
+$ aws lambda invoke response.json --function-name=lambda-hello-js --log-type=Tail --payload="$(base64 <<< '{"my-foo": "my-bar"}')" | tee log.json
+
+$ # parse the result -- from json encoded with escape characters (i.e \")
+$ jq '. | fromjson' response.json
+
+$ # parse the logs -- from base64 encoded text into json value
+$ jq -c -r '.LogResult' log.json | base64 -D
 
 $ # release resources
+$ rm response.json log.json
 $ terraform destroy
 $ cd ..
 ```
