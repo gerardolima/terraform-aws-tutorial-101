@@ -1,12 +1,12 @@
-// create ZIP file: `zip hello-lambda-js.zip index.js`
+// create ZIP file: `zip lambda-hello-js.zip index.js`
 
-console.log('hello-lambda-js: loading');
+console.log('lambda-hello-js: loading');
 
 exports.handler = async (event, context) => {
-    console.log('hello-lambda-js: running');
+    console.log('lambda-hello-js: running');
     
     const resp = {
-        message: 'hello from hello-lambda-js!',
+        message: 'hello from lambda-hello-js!',
         event,
         env: process.env,
     }

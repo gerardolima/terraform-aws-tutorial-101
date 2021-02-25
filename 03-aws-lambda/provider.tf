@@ -1,7 +1,5 @@
-/**
-  resources:
-  - https://registry.terraform.io/providers/hashicorp/aws/latest
-*/
+// https://registry.terraform.io/providers/hashicorp/aws/latest
+
 
 terraform {
   required_providers {
