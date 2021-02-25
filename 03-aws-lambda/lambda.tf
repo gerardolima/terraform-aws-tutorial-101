@@ -20,6 +20,7 @@ resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
   path               = "/service-role/"
   assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
+  tags               = var.project_tags
 }
 
 resource "aws_lambda_function" "test_lambda" {
@@ -40,4 +41,10 @@ resource "aws_lambda_function" "test_lambda" {
       foo = "bar"
     }
   }
+
+  # Use merge() to compose on previous maps
+  tags = merge(var.project_tags, {
+    Foo   = "potato" # << overwrite the previously defined value for the key
+    MyFoo = "MyBar"  # << new key-value pair
+  })
 }
