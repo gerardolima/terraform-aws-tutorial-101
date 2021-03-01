@@ -77,6 +77,35 @@ $ cd ..
 ```
 
 ## AWS Lambda
+
+The following implements a lambda functions that returns information about its
+runtime.
+
+```js
+// @index.js
+// create ZIP file: `zip lambda-hello-js.zip index.js`
+
+console.log('lambda-hello-js: loading');
+
+exports.handler = async (event, context) => {
+    console.log('lambda-hello-js: running');
+
+    const body = {
+        message: 'hello from lambda-hello-js!',
+        event,
+        env: process.env,
+    }
+
+    const response = {
+        statusCode: 201,
+        body: JSON.stringify(body)
+    }
+
+    return response
+};
+
+```
+
 The following commands create a disconnected Lambda function on AWS. Although
 it _can_ be tested it's only accessible by the AWS client tool or AWS console.
 
@@ -98,8 +127,11 @@ $ aws lambda list-functions | jq -c '.Functions[].FunctionName'
 $ # invoke the function created
 $ aws lambda invoke response.json --function-name=lambda-hello-js --log-type=Tail --payload="$(base64 <<< '{"my-foo": "my-bar"}')" | tee log.json
 
+$ # parse the result -- verify the object returned comply with the AWS API Gateway requirements
+$ jq '.statusCode' response.json
+
 $ # parse the result -- from json encoded with escape characters (i.e \")
-$ jq '. | fromjson' response.json
+$ jq '.body | fromjson' response.json
 
 $ # parse the logs -- from base64 encoded text into json value
 $ jq -c -r '.LogResult' log.json | base64 -D
