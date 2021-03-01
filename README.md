@@ -1,6 +1,8 @@
 # Terraform + AWS Tutorial 101
 
-Build, change, and destroy AWS infrastructure using Terraform. Step-by-step, command-line tutorials will walk you through the Terraform basics for the first time. https://learn.hashicorp.com/collections/terraform/aws-get-started
+Build, change, and destroy AWS infrastructure using Terraform. Step-by-step, command-line tutorials will walk you through the Terraform basics for the first time.
+- https://learn.hashicorp.com/collections/terraform/aws-get-started
+- https://learn.hashicorp.com/tutorials/terraform/lambda-api-gateway
 
 ## Install Terraform
 
@@ -135,6 +137,51 @@ $ jq '.body | fromjson' response.json
 
 $ # parse the logs -- from base64 encoded text into json value
 $ jq -c -r '.LogResult' log.json | base64 -D
+
+$ # release resources
+$ rm response.json log.json
+$ terraform destroy
+$ cd ..
+```
+
+## AWS API Gateway
+
+> ### ⚠️ Using Lambda Function as backend for API Gateway ⚠️
+> API Gateway requires the object returned from its backend Lambda Functions:
+>  - *MUST* have a property called statusCode (as `number`), that maps to the
+>    HTTP Status code of the response.
+>  - can have a body property (as `string`); if the function returns a JSON
+>    object, it must be explicitly stringify'ed.
+>
+> I couldn't find the authoritative information on this payload, yet; when it's
+> found, update this documentation.
+
+
+The following commands create a REST API Gateway with a _Resource_ that handles
+any route under the API and any HTTP _Method_, forwarding those requests to the
+Lambda Function (`lambda-hello-js`).
+
+```shell
+$ cd 04-aws-api
+
+$ # zip the function payload (these names are bound on tf files)
+$ zip hello-lambda-js.zip index.js
+
+$ # initialize / validate
+$ terraform init; terraform fmt; terraform validate
+
+$ # create resources (`-auto-approve` requires no user input)
+$ terraform apply -auto-approve
+
+$ #> Expect output as follows and use the value of `base_url` to invoke the API
+$ #> Outputs:
+$ #> base_url = https://8tp030fwi0.execute-api.eu-west-1.amazonaws.com/dev
+
+$ # list all REST API Gateways
+$ aws apigateway get-rest-apis | jq
+
+$ # invoke the API endpoint
+$ curl -s https://8tp030fwi0.execute-api.eu-west-1.amazonaws.com/dev/any-route | jq
 
 $ # release resources
 $ rm response.json log.json
