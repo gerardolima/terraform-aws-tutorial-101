@@ -1,7 +1,7 @@
 // https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 
 
-data aws_iam_policy_document "AWSLambdaTrustPolicy" {
+data aws_iam_policy_document trust_aws {
   statement {
     actions = ["sts:AssumeRole"]
     effect  = "Allow"
@@ -12,11 +12,11 @@ data aws_iam_policy_document "AWSLambdaTrustPolicy" {
   }
 }
 
-resource aws_iam_role "role-hello-js" {
-  name               = "role-hello-js"
+resource aws_iam_role hello_runner {
+  name               = "hello_runner"
   path               = "/service-role/"
   tags               = var.project_tags
-  assume_role_policy = data.aws_iam_policy_document.AWSLambdaTrustPolicy.json
+  assume_role_policy = data.aws_iam_policy_document.trust_aws.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   ]

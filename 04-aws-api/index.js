@@ -1,20 +1,20 @@
-// create ZIP file: `zip lambda-hello-js.zip index.js`
+// create ZIP file: `zip hello_js.zip index.js`
 
-console.log('lambda-hello-js: loading');
+console.log('hello_js: loading');
 
 exports.handler = async (event, context) => {
-    console.log('lambda-hello-js: running');
-    
+    console.log('hello_js: running');
+
     const body = {
-        message: 'hello from lambda-hello-js!',
+        message: 'hello from hello_js!',
         event,
         env: process.env,
     }
-    
+
     const response = {
-        statusCode: 201,
+        statusCode: 200,            // << mandatory
         body: JSON.stringify(body)
     }
-    
+
     return response
 };
