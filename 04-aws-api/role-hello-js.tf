@@ -21,7 +21,7 @@ resource aws_iam_role hello_runner {
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   ]
 
-  tags               = local.project_tags
+  tags = local.project_tags
 }
 
 # Alternative way to attach roles, instead of using `managed_policy_arns`

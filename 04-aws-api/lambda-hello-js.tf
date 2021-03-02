@@ -3,9 +3,9 @@
 
 resource aws_lambda_function hello_js {
   runtime          = "nodejs14.x"
-  function_name    = "hello_js"            # name shown on AWS
-  handler          = "index.handler"       # zip file MUST have a file named `index.js`; this file MUST export a function `handler`
-  filename         = "hello_js.zip"        # keep this in synch with `source_code_hash`
+  function_name    = "hello_js"      # name shown on AWS
+  handler          = "index.handler" # zip file MUST have a file named `index.js`; this file MUST export a function `handler`
+  filename         = "hello_js.zip"  # keep this in synch with `source_code_hash`
   source_code_hash = filebase64sha256("hello_js.zip")
 
   role = aws_iam_role.hello_runner.arn
@@ -18,7 +18,7 @@ resource aws_lambda_function hello_js {
 
   # Use merge() to compose on previous maps
   tags = merge(local.project_tags, {
-    Language  = "JavaScript" # << overwrite value for Language
-    Runtime   = "Node.js"    # << new key-value pair
+    Language = "JavaScript" # << overwrite value for Language
+    Runtime  = "Node.js"    # << new key-value pair
   })
 }

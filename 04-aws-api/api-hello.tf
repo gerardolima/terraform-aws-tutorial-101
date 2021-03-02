@@ -14,23 +14,23 @@ resource aws_api_gateway_rest_api hello {
 }
 
 resource aws_api_gateway_deployment dev {
-   stage_name  = "dev"
-   rest_api_id = aws_api_gateway_rest_api.hello.id
+  stage_name  = "dev"
+  rest_api_id = aws_api_gateway_rest_api.hello.id
 
-   depends_on = [
-     aws_api_gateway_integration.catch_all,
-   ]
+  depends_on = [
+    aws_api_gateway_integration.catch_all,
+  ]
 }
 
 resource aws_lambda_permission hello_invoker {
-   statement_id  = "AllowAPIGatewayInvoke"
-   action        = "lambda:InvokeFunction"
-   function_name = aws_lambda_function.hello_js.function_name
-   principal     = "apigateway.amazonaws.com"
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.hello_js.function_name
+  principal     = "apigateway.amazonaws.com"
 
-   # The "/*/*" portion grants access from any method on any resource
-   # within the API Gateway REST API.
-   source_arn = "${aws_api_gateway_rest_api.hello.execution_arn}/*/*"
+  # The "/*/*" portion grants access from any method on any resource
+  # within the API Gateway REST API.
+  source_arn = "${aws_api_gateway_rest_api.hello.execution_arn}/*/*"
 }
 
 output base_url {
