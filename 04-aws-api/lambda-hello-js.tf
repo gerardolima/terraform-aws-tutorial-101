@@ -17,8 +17,8 @@ resource aws_lambda_function hello_js {
   }
 
   # Use merge() to compose on previous maps
-  tags = merge(var.project_tags, {
+  tags = merge(local.project_tags, {
     Language  = "JavaScript" # << overwrite value for Language
-    Runtime   = "Node.js"  # << new key-value pair
+    Runtime   = "Node.js"    # << new key-value pair
   })
 }

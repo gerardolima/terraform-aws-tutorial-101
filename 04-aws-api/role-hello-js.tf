@@ -16,11 +16,12 @@ data aws_iam_policy_document trust_aws {
 resource aws_iam_role hello_runner {
   name               = "hello_runner"
   path               = "/service-role/"
-  tags               = var.project_tags
   assume_role_policy = data.aws_iam_policy_document.trust_aws.json
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   ]
+
+  tags               = local.project_tags
 }
 
 # Alternative way to attach roles, instead of using `managed_policy_arns`

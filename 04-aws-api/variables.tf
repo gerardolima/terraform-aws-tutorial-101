@@ -1,4 +1,5 @@
 // https://www.terraform.io/docs/cli/config/environment-variables.html#tf_var_name
+// https://www.terraform.io/docs/language/values/locals.html
 // https://registry.terraform.io/providers/hashicorp/aws/latest/docs/guides/resource-tagging
 
 
@@ -12,10 +13,10 @@ variable aws_region { # << $TF_VAR_aws_region
   type        = string
 }
 
-variable project_tags {
-  description = "Tags to be applied to all resources on this project"
-  type        = map(string)
-  default = {
+
+locals {
+  # default project tags
+  project_tags = {
     Terraform = true
     Project   = "Terraform-Tutorial-101"
     Language  = "Terraform"
