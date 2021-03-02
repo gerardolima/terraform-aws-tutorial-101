@@ -19,6 +19,7 @@ resource aws_api_gateway_deployment dev {
 
   depends_on = [
     aws_api_gateway_integration.catch_all,
+    aws_api_gateway_integration.root
   ]
 }
 
